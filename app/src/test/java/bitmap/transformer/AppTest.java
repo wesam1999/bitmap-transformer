@@ -6,9 +6,24 @@ package bitmap.transformer;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 class AppTest {
-    @Test void appHasAGreeting() {
-        App classUnderTest = new App();
-        assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
+    @Test public void testConvertBW() {
+        Bitmap classUnderTest = new Bitmap("Coffee", "convert", "convert");
+        assertTrue(Files.exists(Paths.get("./src/main/resources/convert.bmp")), "app should create a file named CopyCoffee in the main resources file.");
+    }
+
+    @Test public void testFlipImage() {
+        Bitmap classUnderTest = new Bitmap("Coffee", "flipImage", "flipImage");
+        assertTrue(Files.exists(Paths.get("./src/main/resources/flipImage.bmp")), "app should create a file named CopyCoffee in the main resources file.");
+    }
+
+    @Test public void testHalfSizeIt() {
+        Bitmap classUnderTest = new Bitmap("Coffee", "halfSizeIt", "halfSizeIt");
+        assertTrue(Files.exists(Paths.get("./src/main/resources/halfSizeIt.bmp")), "app should create a file named CopyCoffee in the main resources file.");
     }
 }

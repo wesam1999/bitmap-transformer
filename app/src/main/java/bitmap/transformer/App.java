@@ -3,12 +3,16 @@
  */
 package bitmap.transformer;
 
+
+
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
+
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        Bitmap coffee = new Bitmap(args[0], args[1], args[2]);
+
+
+
+
     }
 }
