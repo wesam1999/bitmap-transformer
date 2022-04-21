@@ -4,13 +4,15 @@
 package bitmap.transformer;
 
 
+import java.io.IOException;
+import java.nio.file.Paths;
 
 public class App {
 
 
-    public static void main(String[] args) {
-        Bitmap coffee = new Bitmap(args[0], args[1], args[2]);
-
+    public static void main(String  [] args) throws IOException {
+        Bitmap coffee = new Bitmap();
+coffee.seeBMPImage("Coffee");
 
 
 

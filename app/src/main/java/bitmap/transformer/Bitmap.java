@@ -6,89 +6,84 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import java.nio.file.Files;
+
 public class Bitmap {
 
     private String originalFileName;
-    private String newFileName;
-    private String transformation;
+    public void seeBMPImage(String BMPFileName) throws IOException {
+        this.originalFileName = "./src/main/resources/" + BMPFileName + ".bmp";
+        BufferedImage image = ImageIO.read(getClass().getResource(originalFileName));
+        int[][] array2D = new int[image.getWidth()][image.getHeight()];
+        for (int xPixel = 0; xPixel < image.getWidth(); xPixel++) {
+            for (int yPixels = 0; yPixels < image.getWidth(); yPixels++) {
+                int color = image.getRGB(yPixels, xPixel); //*
+                if (color == Color.BLACK.getRGB()) {
+                    array2D[xPixel][yPixels] = 1;
+                } else {
+                    array2D[xPixel][yPixels] = 0; // ?
+                }
 
-    public Bitmap(String originalFileName, String newFileName, String transformation) {
+                System.out.print(array2D[xPixel][yPixels]);
 
-        this.originalFileName = "./src/main/resources/"+ originalFileName + ".bmp";
-        this.newFileName = "./src/main/resources/"+ newFileName + ".bmp";
-        if (transformation.equals("convert")){
-            convert();
-        } else if (transformation.equals("flipImage")){
-            flipImage();
-        } else if (transformation.equals("halfSizeIt")){
-            halfSizeIt();
-        } else {
-            System.out.println("The method you requested does not exist. Please use either convert, flipImage, or halfSizeIt.");
+            }
+        }
+
+    }
+
+    public void  halfSizeIt() throws IOException {
+        File input = new File(originalFileName);
+        BufferedImage image = ImageIO.read(input);
+        int[][] array2D = new int[image.getWidth() / 2][image.getHeight() / 2];
+        for (int xPixel = 0; xPixel < image.getWidth(); xPixel++) {
+            for (int yPixels = 0; yPixels < image.getWidth(); yPixels++) {
+                int color = image.getRGB(yPixels, xPixel); //*
+                if (color == Color.BLACK.getRGB()) {
+                    array2D[xPixel][yPixels] = 1;
+                } else {
+                    array2D[xPixel][yPixels] = 0; // ?
+                }
+                System.out.print(array2D[xPixel][yPixels]);
+            }
         }
     }
 
-    public void copyfile(String src, String dest) throws IOException{
-//        create copy of each image automagicaly
-        File source = new File(src);
-        File destination = new File(dest);
-        Files.copy(source.toPath(), destination.toPath());
-    }
+    public void changeBackgroundColor() throws IOException {
+        File input = new File(originalFileName);
+        BufferedImage image = ImageIO.read(input);
 
-    public void convert(){
-        try {
-            File input = new File(originalFileName);
-            BufferedImage image = ImageIO.read(input);
+        int[][] array2D = new int[image.getWidth() / 2][image.getHeight() / 2];
+        for (int xPixel = 0; xPixel < image.getWidth(); xPixel++) {
+            for (int yPixels = 0; yPixels < image.getWidth(); yPixels++) {
+                int color = image.getRGB(yPixels, xPixel); //*
+                if (color == Color.BLACK.getRGB()) {
+                    array2D[xPixel][yPixels] = 1;
+                } else {
+                    array2D[xPixel][yPixels] = 0; //
+                    image.setRGB(xPixel, yPixels, 255);//green
+                }
 
-            BufferedImage result = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_BYTE_BINARY);
+                System.out.print(array2D[xPixel][yPixels]);
 
-            Graphics2D graphic = result.createGraphics();
-            graphic.drawImage(image, 0, 0, Color.WHITE, null);
-            graphic.dispose();
-
-            File output = new File(newFileName);
-            ImageIO.write(result, "bmp", output);
-
-        } catch (IOException e){
-            e.printStackTrace();
+            }
         }
     }
 
-    public void flipImage(){
-        try {
-            File input = new File(originalFileName);
-            BufferedImage image = ImageIO.read(input);
+public void flipImage() throws IOException{
+        int temp;
+    File input = new File(originalFileName);
+    BufferedImage image = ImageIO.read(input);
 
-            BufferedImage result = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
-
-            Graphics2D graphic = result.createGraphics();
-            graphic.drawImage(image, 0, image.getHeight(), image.getWidth(), 0, 0, 0, image.getWidth(), image.getHeight(), null);
-            graphic.dispose();
-
-            File output = new File(newFileName);
-            ImageIO.write(result, "bmp", output);
-
-        } catch (IOException e){
-            e.printStackTrace();
+    int[][] array2D = new int[image.getWidth() / 2][image.getHeight() / 2];
+    for (int i = 0; i < array2D.length; i++)
+    {
+        for (int j = 0; j < array2D[i].length / 2; j++)
+        {
+            temp = array2D[i][j];
+            array2D[i][j] = array2D[array2D.length - 1 - i][j];
+            array2D[array2D.length - 1 - i][j] = temp;
         }
     }
 
-    public void halfSizeIt(){
-        try {
-            File input = new File(originalFileName);
-            BufferedImage image = ImageIO.read(input);
 
-            BufferedImage result = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
-
-            Graphics2D graphic = result.createGraphics();
-            graphic.drawImage(image, 0,  0, image.getWidth()/2, image.getHeight()/2,  null);
-            graphic.dispose();
-
-            File output = new File(newFileName);
-            ImageIO.write(result, "bmp", output);
-
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-    }
+}
 }
